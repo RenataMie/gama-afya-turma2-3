@@ -6,8 +6,10 @@ import api from "../../service/api";
 interface IUserRegister{
   cpf: string
   nome: string,
-  login: string,
-  senha: string,
+  tel: string,
+  celular: string,
+  email: string,
+
   
 }
 
@@ -26,10 +28,10 @@ const FormSignUp: React.FC = () => {
       setIsLoad(true)
 
 
-      api.post("usuarios", formDataContent).then(
+      api.post("clientes", formDataContent).then(
         response => {
-          toast.success("Cadastro realizado com sucesso! Voce esta sendo redirecionado pro login", {
-            onClose: () =>  history.push("/login")
+          toast.success("Primeira parte ok, continue o cadastro", {
+            onClose: () =>  history.push("/endereco")
           })
         }
       ).catch(e => toast.error("Ops, algo deu errado :("))
@@ -51,9 +53,10 @@ const FormSignUp: React.FC = () => {
          (<p>Carregando</p>)
         :  ( <form onSubmit={handleSubmit}>
         <input type="text" name="name" placeholder="Insira seu nome" onChange={e => setFormDataContent({...formDataContent, nome: e.target.value})}/>
-        <input type="text" name="username" placeholder="nome do usuario" onChange={e => setFormDataContent({...formDataContent, login: e.target.value})}/>
         <input type="text" name="cpf" placeholder="informe seu cpf" onChange={e => setFormDataContent({...formDataContent, cpf: e.target.value})}/>
-        <input type="password" name="password" placeholder="senha" onChange={e => setFormDataContent({...formDataContent, senha: e.target.value})}/>
+        <input type="text" name="tel" placeholder="telefone" onChange={e => setFormDataContent({...formDataContent, tel: e.target.value})}/>
+        <input type="text" name="celular" placeholder="celular" onChange={e => setFormDataContent({...formDataContent, celular: e.target.value})}/>
+        <input type="text" name="email" placeholder="email" onChange={e => setFormDataContent({...formDataContent, email: e.target.value})}/>
         <input type="submit" value="criar conta"/>
       </form>
       )}
