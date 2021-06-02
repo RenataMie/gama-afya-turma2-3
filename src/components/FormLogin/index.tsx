@@ -34,7 +34,7 @@ const FormLogin: React.FC = () => {
       api.post("login", formDataContent).then(
         response => {
             localStorage.setItem("@tokenAfyaApp", response.data.token)
-          toast.success("Ok! Voce esta sendo redirecionado pro login", {
+            toast.success("Ok! Voce esta sendo redirecionado pro login", {
             onClose: () =>  history.push("/dash")
           })
         }

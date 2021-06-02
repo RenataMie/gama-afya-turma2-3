@@ -10,11 +10,12 @@ class Endereco extends Model {
             bairro:DataTypes.STRING,
             cidade:DataTypes.STRING,
             uf:DataTypes.STRING,
+            
 
         }, { sequelize: connection})
     }
     static associate(models) {
-        this.belongsTo(models.Cliente, {foreignKey: 'cliente_id', as: "cliente_endereco"})
+        this.belongsTo(models.Cliente, {foreignKey: 'cliente_id', as: "last_insert_id()"})
     }
 
 }

@@ -12,7 +12,7 @@ const Endereco: React.FC = () => {
     <NavBar/>
     <div className="container">
    
-          <h1>Continuacao cadastro</h1>
+          <h1>Endereço:</h1>
           <FormEndereco/>
       
       </div>

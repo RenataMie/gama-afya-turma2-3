@@ -1,9 +1,11 @@
+require("dotenv/config");
+
 module.exports = {
     dialect: "mysql",
-    host: "localhost",
-    username:"root",
-    password: null,
-    database: "Desafio_gama",
+    host: process.env.DATABASE_HOST,
+    username: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_SCHEMA,
     define: {
         //da horario de criacao/atualizacao de forma automatica
         timestamps: true,

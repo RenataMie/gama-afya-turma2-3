@@ -10,8 +10,6 @@ module.exports = {
             include: {association: "endereco"}
         });
 
-       
-
         return res.json(cliente);
     },
 
@@ -20,6 +18,7 @@ module.exports = {
         const { cep, logradouro, numero, bairro, cidade, uf} = req.body;
 
         const cliente = await Cliente.findByPk(cliente_id);
+    
 
         if(!cliente) {
             return res.status(400).json({error: "cliente nao encontrado"});

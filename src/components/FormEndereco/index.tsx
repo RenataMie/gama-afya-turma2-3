@@ -3,6 +3,7 @@ import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
 import api from "../../service/api";
 
+
 interface IUserAdress{
   cep: number|string,
   logradouro: string,
@@ -21,17 +22,31 @@ const FormEndereco: React.FC = () => {
 
   const[formDataContent, setFormDataContent]=useState<IUserAdress>({} as IUserAdress);
   const [isLoad, setIsLoad] = useState<boolean>(false)
+  const [params, setParams] = useState<number>()
+
+
+ function getId(){
+  api.get("/clientes/:clientes_id")
+      .then(res => {
+          if ( res.status === 200) {
+            console.log(res.data)
+            setParams(res.data);
+          }
+        })
+      .catch(console.error)
+    }
+getId();
 
   const handleSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsLoad(true)
-
-
-      api.post("/clientes/:cliente_id/enderecos", formDataContent).then(
+        
+       await api.post("/clientes/" + params + "/enderecos", formDataContent).then(
         response => {
-          toast.success("Cadastro realizado com sucesso! Voce esta sendo redirecionado pro login", {
-            onClose: () =>  history.push("/login")
+          // localStorage.setItem("@tokenDesafioAfyaApp", response.data.id)
+          toast.success("Cadastro realizado com sucesso!", {
+          onClose: () =>  history.push("/")
           })
         }
       ).catch(e => toast.error("Ops, algo deu errado :("))
@@ -44,7 +59,7 @@ const FormEndereco: React.FC = () => {
       //   setIsLoad(false)
       // },1000);
 
-    }, [formDataContent, history]
+    }, [formDataContent, history, params]
   );
 
   return (
@@ -58,7 +73,7 @@ const FormEndereco: React.FC = () => {
         <input type="text" name="bairro" placeholder="bairro" onChange={e => setFormDataContent({...formDataContent, bairro: e.target.value})}/>
         <input type="text" name="cidade" placeholder="cidade" onChange={e => setFormDataContent({...formDataContent, cidade: e.target.value})}/>
         <input type="text" name="cidade" placeholder="uf" onChange={e => setFormDataContent({...formDataContent, uf: e.target.value})}/>
-        <input type="submit" value="criar conta"/>
+        <input type="submit" value="criar conta" />
       </form>
       )}
         
