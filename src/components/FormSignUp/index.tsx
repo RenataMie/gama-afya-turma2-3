@@ -8,7 +8,9 @@ interface IUserRegister{
   nome: string,
   tel: string,
   celular: string,
+  data_nasc: string,
   email: string,
+  tipo_sangue: string
 }
 
 // import { Container } from './styles';
@@ -25,27 +27,25 @@ const FormSignUp: React.FC = () => {
     if(!id){
       console.log("nenhum id encontrado")
       setFormDataContent({} as IUserRegister)
-  } else {
-    api.get("/clientes")
-    .then(res => 
-      {const dt= res.data.find(((data:{ id: string })  => JSON.stringify(data.id) === id))
-      return (setFormDataContent(dt))
-      
-      }
-      )
-  .catch(console.error)}
+    } else {
+      api.get("/pacientes")
+        .then(res => 
+          {const dt= res.data.find(((data:{ id: string })  => JSON.stringify(data.id) === id))
+            return (setFormDataContent(dt))}
+          )
+        .catch(console.error)}
   },[id])
   
 
-  const postCliente = useCallback(
+  const postPaciente= useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsLoad(true)
 
-      api.post("clientes", formDataContent).then(
+      api.post("pacientes", formDataContent).then(
         response => {
-          toast.success("Primeira parte ok, continue com o cadastro", {
-            onClose: () =>  history.push("/endereco")
+          toast.success("Cadastro salvo com sucesso", {
+            onClose: () =>  history.push("/")
           })
         }
       ).catch(e => toast.error("Ops, algo deu errado :("))
@@ -53,12 +53,12 @@ const FormSignUp: React.FC = () => {
     }, [formDataContent, history]
   );
 
-  const updateCliente = useCallback(
+  const updatePaciente = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsLoad(true)
 
-      api.put(`clientes/${id}`, formDataContent).then(
+      api.put(`pacientes/${id}`, formDataContent).then(
         response => {
           toast.success("Cadastro atualizado com sucesso", {
             onClose: () =>  history.push(`/${id}`)
@@ -75,23 +75,27 @@ const FormSignUp: React.FC = () => {
         
         {isLoad ?
          (<p>Carregando</p>)
-        :  ( <form onSubmit={postCliente}>
+        :  ( <form onSubmit={postPaciente} >
         <input type="text" name="name" placeholder="Insira seu nome" onChange={e => setFormDataContent({...formDataContent, nome: e.target.value})}/>
         <input type="text" name="cpf" placeholder="informe seu cpf" onChange={e => setFormDataContent({...formDataContent, cpf: e.target.value})}/>
         <input type="text" name="tel" placeholder="telefone" onChange={e => setFormDataContent({...formDataContent, tel: e.target.value})}/>
         <input type="text" name="celular" placeholder="celular" onChange={e => setFormDataContent({...formDataContent, celular: e.target.value})}/>
+        <input type="date" name="data_nasc" placeholder="data de nascimento" onChange={e => setFormDataContent({...formDataContent, data_nasc: e.target.value})}/>
         <input type="text" name="email" placeholder="email" onChange={e => setFormDataContent({...formDataContent, email: e.target.value})}/>
+        <input type="text" name="tipo_sangue" placeholder="tipo sanguineo" onChange={e => setFormDataContent({...formDataContent, tipo_sangue: e.target.value})}/>
         <input type="submit" value="continuar"/>
       </form>
       )}
       </div>
+
   )} else {
+    
     return (
       <div>
         
       {isLoad ?
        (<p>Carregando</p>)
-      :  ( <form onSubmit={updateCliente}>
+      :  ( <form onSubmit={updatePaciente}>
       <input type="text" name="name" placeholder="Insira seu nome" value={formDataContent.nome} onChange={e => setFormDataContent({...formDataContent, nome: e.target.value})}/>
       <input type="text" name="cpf" placeholder="informe seu cpf" value={formDataContent.cpf} onChange={e => setFormDataContent({...formDataContent, cpf: e.target.value})}/>
       <input type="text" name="tel" placeholder="telefone" value={formDataContent.tel} onChange={e => setFormDataContent({...formDataContent, tel: e.target.value})}/>

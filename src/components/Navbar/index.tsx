@@ -15,8 +15,10 @@ const NavBar: React.FC = () => {
        
         <div className="links-content">
            
-          <Link to="/">Home</Link>
-          <Link to="/criar-conta">Cadastro</Link>
+          <Link to="/">Busca paci</Link>
+          <Link to="/especialistas">Busca Espe</Link>
+          <Link to="/criar-conta">Cadastro Paciente</Link>
+          <Link to="/criar-medico">Cadastro Especialista</Link>
           <Link to="/login">Login</Link>
           </div>
       </NavBarContent>

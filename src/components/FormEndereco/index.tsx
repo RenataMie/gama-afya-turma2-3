@@ -1,5 +1,6 @@
-import React, { FormEvent, useCallback, useState } from 'react';
-import {useHistory} from "react-router-dom";
+
+import React, { FormEvent, useCallback, useState, useEffect} from 'react';
+import {useHistory, useParams} from "react-router-dom";
 import {toast} from "react-toastify";
 import api from "../../service/api";
 
@@ -10,63 +11,72 @@ interface IUserAdress{
   numero: number|string,
   bairro: string,
   cidade: string,
-  uf: string,
-
+  uf: string
 }
 
-// import { Container } from './styles';
+interface Pacprops{
+  cpf: string
+  nome: string,
+  tel: string,
+  celular: string,
+  data_nasc: string,
+  email: string,
+  tipo_sangue: string,
+  id_endereco: number|string
+}
+
 
 const FormEndereco: React.FC = () => {
 
   const history= useHistory();
+  let { id }  = useParams<{ id: string }>();
 
   const[formDataContent, setFormDataContent]=useState<IUserAdress>({} as IUserAdress);
   const [isLoad, setIsLoad] = useState<boolean>(false)
-  const [params, setParams] = useState<number>()
+  const [pacienteProp, setPacienteProp]=useState<Pacprops>({} as Pacprops);
+  const [endId, setEndId] = useState<number>()
+  
 
+  useEffect(
+    () => {
+    api.get("/pacientes/" + id)
+    .then(res => setPacienteProp(res.data))
+    .catch(console.error)
+  },[id])
 
- function getId(){
-  api.get("/clientes/:clientes_id")
-      .then(res => {
-          if ( res.status === 200) {
-            console.log(res.data)
-            setParams(res.data);
-          }
-        })
-      .catch(console.error)
-    }
-getId();
 
   const handleSubmit = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
+
+      (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsLoad(true)
-        
-       await api.post("/clientes/" + params + "/enderecos", formDataContent).then(
-        response => {
-          // localStorage.setItem("@tokenDesafioAfyaApp", response.data.id)
-          toast.success("Cadastro realizado com sucesso!", {
-          onClose: () =>  history.push("/")
-          })
-        }
-      ).catch(e => toast.error("Ops, algo deu errado :("))
-      .finally(() => setIsLoad(false))
+      
+           api.post("/enderecos", formDataContent).then(
+             response => {
+              setEndId(response.data.id)
+              console.log(endId)
+              const pacienteAllData = {...pacienteProp, id_endereco: response.data.id}
+              console.log(pacienteAllData)
 
-      // console.log(JSON.stringify(formDataContent));
-      // console.log(formDataContent.senha)
-
-      // setTimeout(() => {
-      //   setIsLoad(false)
-      // },1000);
-
-    }, [formDataContent, history, params]
+           api.put("/pacientes/" + id, pacienteAllData)
+              .then(() => {
+                     toast.success("Endereco atualizado com sucesso!", {
+                     onClose: () =>  history.push("/")
+                     })})
+               .catch(() => toast.error("Ops, algo deu errado :("))
+               .finally(() => setIsLoad(false))
+             })     
+    }, [endId, formDataContent, history, pacienteProp, id]
   );
 
+  if(pacienteProp) {
   return (
       <div>
         {isLoad ?
          (<p>Carregando</p>)
-        :  ( <form onSubmit={handleSubmit}>
+        :  ( 
+        <div>
+        <form onSubmit={handleSubmit}>
         <input type="number" name="cep" placeholder="cep" onChange={e => setFormDataContent({...formDataContent, cep: e.target.value})}/>
         <input type="text" name="logradouro" placeholder="logradouro" onChange={e => setFormDataContent({...formDataContent, logradouro: e.target.value})}/>
         <input type="number" name="numero" placeholder="numero" onChange={e => setFormDataContent({...formDataContent, numero: e.target.value})}/>
@@ -74,12 +84,15 @@ getId();
         <input type="text" name="cidade" placeholder="cidade" onChange={e => setFormDataContent({...formDataContent, cidade: e.target.value})}/>
         <input type="text" name="cidade" placeholder="uf" onChange={e => setFormDataContent({...formDataContent, uf: e.target.value})}/>
         <input type="submit" value="criar conta" />
-      </form>
+        </form>
+      </div>
       )}
-        
-        
       </div>
   );
+  } else {
+       return  <h1>epa</h1>
+  }
+
 }
 
 export default FormEndereco;

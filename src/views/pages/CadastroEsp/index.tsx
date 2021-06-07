@@ -1,21 +1,21 @@
 import React from 'react';
+
 import NavBar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
-import FormEndereco from "../../../components/FormEndereco";
+import FormEspe from "../../../components/FormEspe";
 
-// import { SectionComponent } from './styles';
 
-const Endereco: React.FC = () => {
+const SignUp: React.FC = () => {
+
   
   return (
     <>
     <NavBar/>
     <div className="container">
+    
+          <h1>Dados Pessoais:</h1>
+          <FormEspe/>
           
-          <h1>Endereço:</h1>
-          <FormEndereco
-          
-          />
       
       </div>
     <Footer/>
@@ -25,4 +25,4 @@ const Endereco: React.FC = () => {
   );
 }
 
-export default Endereco;
+export default SignUp;

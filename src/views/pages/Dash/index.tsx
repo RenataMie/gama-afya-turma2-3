@@ -14,23 +14,23 @@ const Dash: React.FC = () => {
   const [resultadoApi, setResultadoApi] = useState<any>({});
   
 
-  console.log("0.0 the variable ",resultadoApi)
-  console.log("0.1 typeof ",typeof(resultadoApi))
-  console.log("0.0 the nome ",resultadoApi.nome)
+  // console.log("0.0 the variable ",resultadoApi)
+  // console.log("0.1 typeof ",typeof(resultadoApi))
+  // console.log("0.0 the nome ",resultadoApi.nome)
 
   useEffect(
     () => {
-    api.get("/clientes/" + id +"/enderecos")
+    api.get("/pacientes/" + id)
     .then(res => setResultadoApi(res.data))
     .catch(console.error)
   },[id])
 
 
-  console.log("endereco e:" ,resultadoApi.endereco)
+  // console.log("endereco e:" ,resultadoApi.endereco_paciente)
 
-  let endereco =  resultadoApi.endereco
+  let endereco =  resultadoApi.endereco_paciente
   if (typeof(endereco)==="undefined"){
-    console.log("endereco is undefined!")
+    // console.log("endereco is undefined!")
     endereco = {}
   }
 
@@ -45,6 +45,31 @@ const Dash: React.FC = () => {
     }, [history, id]
   );
   
+if(!endereco){
+  return (
+    <>
+    
+      <div>
+          <h1>Paciente: {resultadoApi.nome} </h1>
+          <p>CPF: {resultadoApi.cpf}</p>
+          <p>Tel: {resultadoApi.tel}</p>  <p>Celular: {resultadoApi.celular}</p>
+          <p>Email: {resultadoApi.email}</p>
+          <Link to={`${resultadoApi.id}/edit`} >Editar dados</Link>
+      </div>
+
+      <div>
+        <h1>Endereço:</h1>
+
+        <Link to={`/endereco/${resultadoApi.id}`} >Adicionar endereco</Link>
+      </div>
+      
+
+      <br/>
+      <button onClick={deleteCliente}>deletar paciente</button>
+    </>
+      
+  );
+} else {
 
   return (
     <>
@@ -56,20 +81,26 @@ const Dash: React.FC = () => {
           <p>Email: {resultadoApi.email}</p>
           <Link to={SignUp => `${resultadoApi.id}/edit`} >Editar dados</Link>
       </div>
+
       <div>
-        <h1>Endereco:</h1>
-        <p>{endereco.logradouro}, {endereco.numero}</p>
+        <h1>Endereço:</h1>
+        <p>CEP: {endereco.cep}</p>
+        <p>Logradouro: {endereco.logradouro}</p>  
         <p>Bairro: {endereco.bairro}</p>
-        <p>Cep: {endereco.cep}</p>
-        <p>{endereco.cidade}, {endereco.uf}</p>
-        <a href="/id/edit">Editar endereco</a>
+        <p>Cidade: {endereco.cidade}, {endereco.uf}</p>
+
+        <Link to={`/endereco/${resultadoApi.id}`} >Editar endereco</Link>
       </div>
+      
 
       <br/>
       <button onClick={deleteCliente}>deletar paciente</button>
     </>
       
   );
+
+}
+  
 }
 
 export default Dash;
