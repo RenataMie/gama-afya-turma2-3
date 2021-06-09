@@ -8,7 +8,9 @@ import SignUp from "./views/pages/SignUp";
 import Endereco from "./views/pages/Endereco";
 import Dash from "./views/pages/Dash";
 import CadastroEsp from "./views/pages/CadastroEsp";
+import BuscaPaciente from "./views/pages/BuscaPaciente";
 import BuscaEsp from './views/pages/BuscaEspe';
+import Agenda from "./views/pages/Agenda";
 
 // import { Container } from './styles';
 
@@ -17,6 +19,8 @@ const Routes: React.FC = () => {
     <BrowserRouter>
         <Switch>
             <Route path="/" exact component={Home}/>
+            <Route path="/agenda" exact component={Agenda}/>
+            <Route path="/pacientes" exact component={BuscaPaciente}/>
             <Route path="/especialistas" exact component={BuscaEsp}/>
             <Route path="/login" component={Login}/>
             <Route path="/criar-conta" component={SignUp}/>

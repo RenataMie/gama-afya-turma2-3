@@ -15,7 +15,9 @@ const NavBar: React.FC = () => {
        
         <div className="links-content">
            
-          <Link to="/">Busca paci</Link>
+          
+          <Link to="/agenda">Agenda</Link>
+          <Link to="/pacientes">Busca Paci</Link>
           <Link to="/especialistas">Busca Espe</Link>
           <Link to="/criar-conta">Cadastro Paciente</Link>
           <Link to="/criar-medico">Cadastro Especialista</Link>

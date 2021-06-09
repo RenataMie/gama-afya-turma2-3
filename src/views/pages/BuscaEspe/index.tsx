@@ -16,29 +16,21 @@ const BuscaEsp: React.FC = () => {
         console.log("nenhuma busca")
         return
     } else {
-        api.get("/profissoes")
+        api.get("/especialista")
           .then(res => {
             setApiData(res.data)
-            console.log(apiData)
+            console.log(res.data)
           })
           .catch(console.error)
       }
     }
-
-    let especialista =  apiData.especialistas;
-            if (typeof(especialista)==="undefined"){
-                // console.log("endereco is undefined!")
-            especialista = []
-            }
-    console.log(especialista)
-
 
   return (
 
     <div>
       <div>
           <form action="" onSubmit={getClientes}>
-            <label htmlFor="">Procurar por especialidade :</label><br/>
+            <label htmlFor="">Procurar por nome do especialista :</label><br/>
             <input type="text" name="nome" value={search} onChange={e => setSearch(e.target.value)}/>
           </form>
       </div>
@@ -47,10 +39,10 @@ const BuscaEsp: React.FC = () => {
       {!search? null :
       
         <div>
-           {especialista.filter((data: {profissao: string}) => {
-                  return (data.profissao).toUpperCase().includes(search.toUpperCase());
+           {apiData.filter((data: {nome: string}) => {
+                  return (data.nome).toUpperCase().includes(search.toUpperCase());
                 }).map ((data : {
-                 especialistas: any;
+                  profissao_especialista: any;
                   id: React.Key; 
                   nome: string;
                   tel: null|string; 
@@ -59,13 +51,16 @@ const BuscaEsp: React.FC = () => {
                   profissao:string
                 }) => {
                   return(
-                    <div key={data.especialistas[0].id}>
-                        <Link to={`${data.id}`} >Nome : {data.especialistas[0].nome}</Link>
-                        {/* <p>Profissao: {profissao.profissao}</p> */}
+                    <div key={data.id}>
+                        <Link to={`${data.id}`} >Nome : {data.nome}</Link>
+                        <p>Profissao: {data.profissao_especialista.profissao}</p> 
                         <p>Tel/ Celular: {data.tel || data.celular}  </p>
-                        <p> Email: {data.email}</p><br/>
+                        
+                        
                     </div>
+                    
                 )
+                  
                 })
            }
         
