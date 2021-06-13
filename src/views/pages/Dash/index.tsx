@@ -48,7 +48,7 @@ const Dash: React.FC = () => {
 if(!endereco){
   return (
     <>
-    
+
       <div>
           <h1>Paciente: {resultadoApi.nome} </h1>
           <p>CPF: {resultadoApi.cpf}</p>
@@ -56,6 +56,8 @@ if(!endereco){
           <p>Email: {resultadoApi.email}</p>
           <Link to={`${resultadoApi.id}/edit`} >Editar dados</Link>
       </div>
+
+      <Link to={`/endereco/${resultadoApi.id}`} >PRONTUARIO</Link>
 
       <div>
         <h1>Endereço:</h1>
@@ -81,6 +83,8 @@ if(!endereco){
           <p>Email: {resultadoApi.email}</p>
           <Link to={SignUp => `${resultadoApi.id}/edit`} >Editar dados</Link>
       </div>
+
+      <button><Link to={`/prontuario/${resultadoApi.id}`} >PRONTUARIO</Link></button>
 
       <div>
         <h1>Endereço:</h1>

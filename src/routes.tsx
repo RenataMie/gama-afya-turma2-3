@@ -11,6 +11,7 @@ import CadastroEsp from "./views/pages/CadastroEsp";
 import BuscaPaciente from "./views/pages/BuscaPaciente";
 import BuscaEsp from './views/pages/BuscaEspe';
 import Agenda from "./views/pages/Agenda";
+import Prontuario from "./views/pages/Prontuario";
 
 // import { Container } from './styles';
 
@@ -28,6 +29,7 @@ const Routes: React.FC = () => {
             <Route path="/endereco/:id" children={<Endereco />}/>
             <Route path="/:id" exact children={<Dash/>}/>
             <Route path="/:id/edit" exact children={<SignUp/>}/>
+            <Route path="/prontuario/:id" children={<Prontuario />}/>
 
         </Switch>
     </BrowserRouter>
